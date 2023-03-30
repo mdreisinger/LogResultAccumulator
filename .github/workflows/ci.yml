@@ -21,8 +21,8 @@ jobs:
 
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        poetry run pylint $(git ls-files '*.py')
 
     - name: Test with pytest
       run: |
-        pytest LogResultAccumulator/tests/test_accumulate_results.py --log-cli-level=DEBUG -x
+        poetry run pytest LogResultAccumulator/tests/test_accumulate_results.py --log-cli-level=DEBUG -x
