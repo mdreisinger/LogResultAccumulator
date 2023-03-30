@@ -17,7 +17,6 @@ def graph_results(accumulated_result: AccumulatedResult) -> None:
     plt.subplots()
     bar_width = 0.25
     index = np.arange(len(results_dict))
-    print(index)
 
     fruits = list(results_dict.keys())
     passes = [result.passed for result in results_dict.values()]
@@ -31,7 +30,7 @@ def graph_results(accumulated_result: AccumulatedResult) -> None:
     plt.ylabel('Results')
     plt.title('Results by Fruit')
     plt.legend()
-    plt.xticks(index + bar_width/2, (fruits))
+    plt.xticks(index + bar_width/2, (fruits), rotation='vertical')
 
     plt.show()
 
