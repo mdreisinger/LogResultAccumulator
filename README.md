@@ -8,7 +8,7 @@ Accumulate a large number of log results and present a condensed summary of the 
 - ~~Setup threading in accumulator.~~
 - ~~Create a function that will generate a huge test file for me to work with.~~
 - Setup dockerfiles and docker-compose.
-- Implement ability to process a queue of log result files.
+  - E.g., log-generator -> queue -> log_accumulator -> S3 bucket
 
 # Optimizations
 - I tried using numpy in Accumulator but it increase memory usage 3.5x
