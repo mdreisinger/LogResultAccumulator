@@ -39,22 +39,3 @@ class AccumulatedResult:
         Method for getting the accumulated results from the cache.
         """
         return self.cache
-
-if __name__ == "__main__":
-    # Run from LogResultAccumulator/LogResultAccumulator
-    # CLI syntax: python -m src.result
-
-    apple_result = Result("Apples")
-    apple_result.passed=2
-    apple_result.failed=0
-    oranges_result = Result("Oranges")
-    oranges_result.passed = 1
-    oranges_result.failed = 1
-    watermelon_result = Result("Watermelon")
-    watermelon_result.passed = 0
-    watermelon_result.failed = 2
-    ac_result = AccumulatedResult()
-    ac_result.add_result(apple_result)
-    ac_result.add_result(oranges_result)
-    ac_result.add_result(watermelon_result)
-    print(ac_result)

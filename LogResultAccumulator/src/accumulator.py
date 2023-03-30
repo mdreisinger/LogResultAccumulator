@@ -51,23 +51,23 @@ class Accumulator:
                 if "Result: " in row:
                     words = row.split(" ")
                     try:
-                        result = words[2].strip()
+                        test_result = words[2].strip()
                     except KeyError as exc:
-                        raise LogFileMisformatted("Expected a string (result) to follow 'Result: '"
-                                                    " but it does not.") from exc
-                    if result == "PASS":
+                        raise LogFileMisformatted("Expected a string (test_result) to follow "
+                                                    "'Result: ' but it does not.") from exc
+                    if test_result == "PASS":
                         try:
                             self.accumulated_result.cache[current_fruit].passed += 1
                         except KeyError as exc:
                             raise LogFileMisformatted(f"Expected {current_fruit}"
-                                                    " to be in accumulated result"
+                                                    " to be in accumulated test_result"
                                                     " but it is not.") from exc
-                    elif result == "FAIL":
+                    elif test_result == "FAIL":
                         try:
                             self.accumulated_result.cache[current_fruit].failed += 1
                         except KeyError as exc:
                             raise LogFileMisformatted(f"Expected {current_fruit}"
-                                                    " to be in accumulated result"
+                                                    " to be in accumulated test_result"
                                                     " but it is not.") from exc
             self.queue.task_done()
 

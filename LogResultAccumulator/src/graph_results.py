@@ -33,25 +33,3 @@ def graph_results(accumulated_result: AccumulatedResult) -> None:
     plt.xticks(index + bar_width/2, (fruits), rotation='vertical')
 
     plt.show()
-
-
-if __name__ == "__main__":
-    # Run from LogResultAccumulator/LogResultAccumulator
-    # CLI syntax: python -m src.graph_results
-
-    from src.result import Result
-    apple_result = Result("Apples")
-    apple_result.passed=2
-    apple_result.failed=0
-    oranges_result = Result("Oranges")
-    oranges_result.passed = 1
-    oranges_result.failed = 1
-    watermelon_result = Result("Watermelon")
-    watermelon_result.passed = 0
-    watermelon_result.failed = 2
-    ac_result = AccumulatedResult()
-    ac_result.add_result(apple_result)
-    ac_result.add_result(oranges_result)
-    ac_result.add_result(watermelon_result)
-    print(ac_result)
-    graph_results(ac_result)
