@@ -1,0 +1,28 @@
+name: ci
+
+on: [push]
+
+jobs:
+  
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.9"
+
+    - name: Install dependencies
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        poetry install
+
+    - name: Analysing the code with pylint
+      run: |
+        pylint $(git ls-files '*.py')
+
+    - name: Test with pytest
+      run: |
+        pytest LogResultAccumulator/tests/test_accumulate_results.py --log-cli-level=DEBUG -x
