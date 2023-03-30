@@ -2,6 +2,8 @@
 The main algorithm for accumulating test log results.
 """
 
+from memory_profiler import profile
+
 from src.exceptions import LogFileMisformatted
 from src.result import AccumulatedResult, Result
 
@@ -24,6 +26,7 @@ class Accumulator:
         for row in open(self.log_file_path, "r", encoding="utf-8"):
             yield row
 
+    @profile
     def accumulate(self) -> AccumulatedResult:
         """
         The main algorithm for accumulating test log results.
@@ -39,7 +42,6 @@ class Accumulator:
                                                " but it does not.") from exc
                 if current_fruit not in self.accumulated_result.cache:
                     self.accumulated_result.cache[current_fruit] = Result(current_fruit)
-                print(current_fruit)
             if "Result: " in row:
                 words = row.split(" ")
                 try:
@@ -47,8 +49,6 @@ class Accumulator:
                 except KeyError as exc:
                     raise LogFileMisformatted("Expected a string (result) to follow 'Result: '"
                                                    " but it does not.") from exc
-                print(result)
-                print(self.accumulated_result.cache[current_fruit])
                 if result == "PASS":
                     try:
                         self.accumulated_result.cache[current_fruit].passed += 1
@@ -63,8 +63,6 @@ class Accumulator:
                         raise LogFileMisformatted(f"Expected {current_fruit}"
                                                    " to be in accumulated result"
                                                    " but it is not.") from exc
-                print(self.accumulated_result.cache[current_fruit])
-
         return self.accumulated_result
 
 
