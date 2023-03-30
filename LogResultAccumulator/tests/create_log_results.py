@@ -15,7 +15,7 @@ def create_file():
     """
     Simple function to randomly generate a file to test with.
     """
-    with open(f"test_data/test_{random.randrange(start=1, stop=10000)}.txt", 
+    with open(f"test_data/test_{random.randrange(start=1, stop=10000)}.txt",
                 "x", encoding="utf-8") as file_handler:
         for i in range(ITERATIONS):
             file_handler.write(f"# Iteration {i}\n")
