@@ -1,5 +1,11 @@
 name: ci
 
+env:
+  ECR_REPOSITORY_ACUUMULATOR: logresultaccumulator
+  ECR_REPOSITORY_GENERATOR: loggenerator
+  ECR_REPOSITORY_UPLOADER: loguploader
+  ECR_REGISTRY: 126493000772.dkr.ecr.us-west-2.amazonaws.com/
+
 on: [push]
 
 jobs:
@@ -26,3 +32,30 @@ jobs:
     - name: Test with pytest
       run: |
         poetry run pytest LogResultAccumulator/tests/test_accumulate_results.py --log-cli-level=DEBUG -x
+    
+    - name: Build and push accumulator image to ECR
+      id: build-image-accumulator
+      run: |
+        aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+        docker build -t logresultaccumulator -f Dockerfile.accumulator .
+        docker tag logresultaccumulator:latest $ECR_REGISTRY/$ECR_REPOSITORY_ACCUMULATOR:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_ACCUMULATOR:latest
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY_ACCUMULATOR:latest"
+
+    - name: Build and push uploader image to ECR
+      id: build-image-uploader
+      run: |
+        aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+        docker build -t loguploader -f Dockerfile.loguploader .
+        docker tag loguploader:latest $ECR_REGISTRY/$ECR_REPOSITORY_UPLOADER:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_UPLOADER:latest
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY_UPLOADER:latest"
+
+    - name: Build and push generator image to ECR
+      id: build-image-generator
+      run: |
+        aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+        docker build -t loggenerator -f Dockerfile.logupgenerator .
+        docker tag loggenerator:latest $ECR_REGISTRY/$ECR_REPOSITORY_GENERATOR:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY_GENERATOR:latest
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY_GENERATOR:latest"

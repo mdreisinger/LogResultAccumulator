@@ -1,0 +1,9 @@
+FROM python:3.9
+
+RUN pip install "poetry==1.4.1"
+COPY LogResultAccumulator/src/log_builder_sender/log_generator.py /logger/
+COPY pyproject.toml /logger/
+WORKDIR /logger/
+RUN poetry install
+
+CMD ["poetry", "run", "python", "log_generator.py"]

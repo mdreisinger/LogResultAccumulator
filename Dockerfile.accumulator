@@ -1,0 +1,9 @@
+FROM python:3.9
+
+RUN pip install "poetry==1.4.1"
+COPY LogResultAccumulator/src/*.py /LogResultAccumulator/src/
+COPY pyproject.toml /LogResultAccumulator/
+WORKDIR /LogResultAccumulator/
+RUN poetry install
+
+CMD [ "poetry", "run", "python" " src.accumulator"]

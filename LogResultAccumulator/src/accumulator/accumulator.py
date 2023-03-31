@@ -7,10 +7,10 @@ from threading import Thread
 
 from memory_profiler import profile
 
-from src.exceptions import LogFileMisformatted
-from src.graph_results import graph_results
-from src.result import AccumulatedResult, Result
-from src.timer import timer
+from src.accumulator.exceptions import LogFileMisformatted
+from src.accumulator.graph_results import graph_results
+from src.accumulator.result import AccumulatedResult, Result
+from src.accumulator.timer import timer
 
 
 class Accumulator:
@@ -114,4 +114,6 @@ if __name__ == "__main__":
     test_dir = f"{cur_dir}/tests"
     accumulator = Accumulator(f"{test_dir}/test_data/test_8594.txt")
     result = accumulator.accumulate()
-    graph_results(result)
+    print(result)
+    graph_results(result, show=False, save=True)
+    # graph_results(result)

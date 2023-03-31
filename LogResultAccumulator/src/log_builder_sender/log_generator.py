@@ -1,8 +1,10 @@
 """
 Module which contains a method to create a large log results file with random data
 """
-
+import calendar
+import pathlib
 import random
+import time
 
 
 ITERATIONS = random.randrange(start=20, stop=1000)
@@ -11,11 +13,14 @@ FRUITS = ['apples','oranges','bananas','mangoes','grapes','strawberry', 'waterme
           'cantaloupe', 'raspberries', 'pears', 'limes', 'blackberries', 'clementine', \
           'plums', 'lime', 'apricot', 'figs', 'dates', 'grapefruit', 'pomegranate']
 
+CUR_DIR = pathlib.Path(__file__).parent.resolve()
+
 def create_file():
     """
     Simple function to randomly generate a file to test with.
     """
-    with open(f"test_data/test_{random.randrange(start=1, stop=10000)}.txt",
+
+    with open(f"{CUR_DIR}/log_files/test_{calendar.timegm(time.gmtime())}.txt",
                 "x", encoding="utf-8") as file_handler:
         for i in range(ITERATIONS):
             file_handler.write(f"# Iteration {i}\n")
@@ -30,4 +35,6 @@ def create_file():
                 file_handler.write(f"# Result: {result}\n")
 
 if __name__ == "__main__":
-    create_file()
+    while True:
+        create_file()
+        time.sleep(random.randrange(30, 240))

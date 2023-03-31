@@ -1,14 +1,19 @@
 """
 Module which contains a function for graphing accumulated results.
 """
+import calendar
+import pathlib
+import time
 
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
-from src.result import AccumulatedResult
+from src.accumulator.result import AccumulatedResult
 
 
-def graph_results(accumulated_result: AccumulatedResult) -> None:
+CUR_DIR = pathlib.Path(__file__).parent.resolve()
+
+def graph_results(accumulated_result: AccumulatedResult, show=True, save=False) -> None:
     """
     Creates a bar graph to display the accumulated results.
     """
@@ -31,5 +36,7 @@ def graph_results(accumulated_result: AccumulatedResult) -> None:
     plt.title('Results by Fruit')
     plt.legend()
     plt.xticks(index + bar_width/2, (fruits), rotation='vertical')
-
-    plt.show()
+    if show:
+        plt.show()
+    if save:
+        plt.savefig(f"{CUR_DIR}/graphs/graph_{calendar.timegm(time.gmtime())}")
