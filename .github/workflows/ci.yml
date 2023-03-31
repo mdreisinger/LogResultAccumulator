@@ -6,6 +6,9 @@ env:
   ECR_REPOSITORY_UPLOADER: loguploader
   ECR_REGISTRY: 126493000772.dkr.ecr.us-west-2.amazonaws.com
 
+permissions:
+  contents: read
+
 on: [push]
 
 jobs:
