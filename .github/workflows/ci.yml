@@ -65,7 +65,7 @@ jobs:
       id: build-image-generator
       run: |
         aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin $ECR_REGISTRY
-        docker build -t loggenerator -f Dockerfile.logupgenerator .
+        docker build -t loggenerator -f Dockerfile.loggenerator .
         docker tag loggenerator:latest $ECR_REGISTRY/$ECR_REPOSITORY_GENERATOR:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_GENERATOR:latest
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY_GENERATOR:latest"
