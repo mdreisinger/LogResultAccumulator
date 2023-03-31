@@ -60,12 +60,3 @@ jobs:
         docker tag loguploader:latest $ECR_REGISTRY/$ECR_REPOSITORY_UPLOADER:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_UPLOADER:latest
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY_UPLOADER:latest"
-
-    - name: Build and push generator image to ECR
-      id: build-image-generator
-      run: |
-        aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin $ECR_REGISTRY
-        docker build -t loggenerator -f Dockerfile.loggenerator .
-        docker tag loggenerator:latest $ECR_REGISTRY/$ECR_REPOSITORY_GENERATOR:latest
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY_GENERATOR:latest
-        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY_GENERATOR:latest"
