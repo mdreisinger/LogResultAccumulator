@@ -43,7 +43,7 @@ jobs:
     - name: Build and push accumulator image to ECR
       id: build-image-accumulator
       run: |
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+        aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin $ECR_REGISTRY
         docker build -t logresultaccumulator -f Dockerfile.accumulator .
         docker tag logresultaccumulator:latest $ECR_REGISTRY/$ECR_REPOSITORY_ACCUMULATOR:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_ACCUMULATOR:latest
@@ -52,7 +52,7 @@ jobs:
     - name: Build and push uploader image to ECR
       id: build-image-uploader
       run: |
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+        aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin $ECR_REGISTRY
         docker build -t loguploader -f Dockerfile.loguploader .
         docker tag loguploader:latest $ECR_REGISTRY/$ECR_REPOSITORY_UPLOADER:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_UPLOADER:latest
@@ -61,7 +61,7 @@ jobs:
     - name: Build and push generator image to ECR
       id: build-image-generator
       run: |
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+        aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin $ECR_REGISTRY
         docker build -t loggenerator -f Dockerfile.logupgenerator .
         docker tag loggenerator:latest $ECR_REGISTRY/$ECR_REPOSITORY_GENERATOR:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY_GENERATOR:latest
