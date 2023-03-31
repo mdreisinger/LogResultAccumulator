@@ -13,13 +13,13 @@ from src.accumulator.result import AccumulatedResult
 
 CUR_DIR = pathlib.Path(__file__).parent.resolve()
 
-def graph_results(accumulated_result: AccumulatedResult, show=True, save=False) -> None:
+def graph_results(accumulated_result: AccumulatedResult, show=True, save=False) -> str:
     """
     Creates a bar graph to display the accumulated results.
     """
     results_dict = accumulated_result.get_accumulated_results()
 
-    plt.subplots()
+    fig, ax = plt.subplots()
     bar_width = 0.25
     index = np.arange(len(results_dict))
 
@@ -36,7 +36,16 @@ def graph_results(accumulated_result: AccumulatedResult, show=True, save=False) 
     plt.title('Results by Fruit')
     plt.legend()
     plt.xticks(index + bar_width/2, (fruits), rotation='vertical')
+    fig.tight_layout()
+    if show and save:
+        plt.show()
+        path = f"{CUR_DIR}/graphs/graph_{calendar.timegm(time.gmtime())}"
+        plt.savefig(path)
+        return path
     if show:
         plt.show()
+        return None
     if save:
-        plt.savefig(f"{CUR_DIR}/graphs/graph_{calendar.timegm(time.gmtime())}")
+        path = f"{CUR_DIR}/graphs/graph_{calendar.timegm(time.gmtime())}"
+        plt.savefig(path)
+        return path

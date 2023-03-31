@@ -2,9 +2,13 @@
 The main algorithm for accumulating test log results.
 """
 
+import json
 import queue
 from threading import Thread
+import time
+import urllib
 
+import boto3
 from memory_profiler import profile
 
 from src.accumulator.exceptions import LogFileMisformatted
@@ -18,8 +22,9 @@ class Accumulator:
     """
     The object responsible for accumulating test log results.
     """
-    def __init__(self, log_file_path: str) -> None:
+    def __init__(self, log_file_path: str = None, log_file_body: str = None) -> None:
         self.log_file_path = log_file_path
+        self.log_file_body = log_file_body
         self.accumulated_result = AccumulatedResult()
         self.queue = queue.Queue()
 
@@ -29,6 +34,14 @@ class Accumulator:
         """
         #pylint:disable=consider-using-with
         for row in open(self.log_file_path, "r", encoding="utf-8"):
+            yield row
+
+    def __read_body(self) -> str:
+        """
+        Generator to read log bodies.
+        """
+        #pylint:disable=consider-using-with
+        for row in self.log_file_body:
             yield row
 
     def __worker(self) -> None:
@@ -77,7 +90,12 @@ class Accumulator:
         """
         iterations = []
         iteration = ()
-        for row in self.__read_file():
+        if self.log_file_body:
+            reader_func = self.__read_body
+        else:
+            reader_func = self.__read_file
+
+        for row in reader_func():
             if "Iteration " in row and iteration:
                 iterations.append(iteration)
                 iteration = ()
@@ -104,16 +122,28 @@ class Accumulator:
         self.queue.join()
         return self.accumulated_result
 
+def lambda_handler(event, _):
+    """
+    The function which is called when a new file is create in the S3 log file bucket.
+    """
+    print("Received event: " + json.dumps(event, indent=2))
 
-if __name__ == "__main__":
-    # Run from LogResultAccumulator/LogResultAccumulator
-    # CLI syntax: python -m src.accumulator
+    s3_client = boto3.client('s3')
 
-    import pathlib
-    cur_dir = pathlib.Path().resolve()
-    test_dir = f"{cur_dir}/tests"
-    accumulator = Accumulator(f"{test_dir}/test_data/test_8594.txt")
-    result = accumulator.accumulate()
-    print(result)
-    graph_results(result, show=False, save=True)
-    # graph_results(result)
+    #Get the object from the event and show its content type
+    bucket_name = event['Records'][0]['s3']['bucket']['name']
+    key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
+
+    s3_object = s3_client.get_object(Bucket=bucket_name, Key=key)
+    body = s3_object['Body']
+
+    accumulator = Accumulator(log_file_body=body)
+    accumulated_results = accumulator.accumulate()
+    graph_path = graph_results(accumulated_results, show=False, save=True)
+
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    result_key = f'AccumulatedResults/{timestamp}_result.txt'
+    graph_result_key = f'AccumulatedResults/{timestamp}_graph.txt'
+
+    s3_client.put(Body=print(accumulated_results), Bucket=bucket_name, key=result_key)
+    s3_client.put(graph_path, Bucket=bucket_name, key=graph_result_key)

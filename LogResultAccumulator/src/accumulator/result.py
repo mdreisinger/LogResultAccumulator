@@ -15,6 +15,7 @@ class Result:
     failed: int = 0
 
 class AccumulatedResult:
+    #pylint:disable=too-few-public-methods
     """
     An object to store the accumulated results for multiple fruits.
     """
@@ -26,16 +27,3 @@ class AccumulatedResult:
         for fruit, result in self.cache.items():
             output += f"{fruit}:\n\tPASSED: {result.passed}\n\tFAILED: {result.failed}\n"
         return output
-
-    def add_result(self, result : Result) -> None:
-        """
-        Method for adding a result to the cache.
-        """
-        if result.fruit not in self.cache:
-            self.cache[result.fruit] = result
-
-    def get_accumulated_results(self) -> dict:
-        """
-        Method for getting the accumulated results from the cache.
-        """
-        return self.cache

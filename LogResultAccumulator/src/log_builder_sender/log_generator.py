@@ -19,9 +19,9 @@ def create_file():
     """
     Simple function to randomly generate a file to test with.
     """
-
-    with open(f"{CUR_DIR}/log_files/test_{calendar.timegm(time.gmtime())}.txt",
-                "x", encoding="utf-8") as file_handler:
+    file_to_create = f"{CUR_DIR}/log_files/test_{calendar.timegm(time.gmtime())}.txt"
+    with open(file_to_create, "x", encoding="utf-8") as file_handler:
+        print(f"Creating file: {file_to_create}")
         for i in range(ITERATIONS):
             file_handler.write(f"# Iteration {i}\n")
             fruit = random.choice(FRUITS)
@@ -34,7 +34,12 @@ def create_file():
                 file_handler.write(f"# I am not sure about {fruit}\n")
                 file_handler.write(f"# Result: {result}\n")
 
-if __name__ == "__main__":
+def continuous_files():
+    """
+    Continuously create log files forever
+    """
     while True:
         create_file()
-        time.sleep(random.randrange(30, 240))
+        sleep_time = random.randrange(5, 60)
+        print(f"Waiting {sleep_time} seconds before creating new file")
+        time.sleep(sleep_time)

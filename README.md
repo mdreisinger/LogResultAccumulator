@@ -43,7 +43,7 @@ Accumulate a large number of log results and present a condensed summary of the 
     - numpy_methods
     - itertools
   - Dockerfile optimizations:
-    - Use slimar docker base images.
+    - Use slimar docker base images. (currently using Python3.9 image)
   - If memory persistance is important, need to get rid of accumulator cache and replace it with database.
 
 ## Threading Notes
