@@ -73,3 +73,6 @@ Accumulate a large number of log results and present a condensed summary of the 
 - `docker build -t loggenerator -f Dockerfile.loggenerator .`
 - `docker tag loggenerator:latest 126493000772.dkr.ecr.us-west-2.amazonaws.com/logupgenerator:latest`
 - `docker push 126493000772.dkr.ecr.us-west-2.amazonaws.com/logupgenerator:latest`
+
+# Initial Cloud Infrastructure Concept
+![Alt text](documentation/cloud_infrastructure.png?raw=true "Title")
