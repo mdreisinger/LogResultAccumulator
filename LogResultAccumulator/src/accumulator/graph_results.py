@@ -19,7 +19,7 @@ def graph_results(accumulated_result: AccumulatedResult, show=True, save=False) 
     """
     results_dict = accumulated_result.get_accumulated_results()
 
-    fig, ax = plt.subplots()
+    fig, _ = plt.subplots()
     bar_width = 0.25
     index = np.arange(len(results_dict))
 
@@ -44,8 +44,9 @@ def graph_results(accumulated_result: AccumulatedResult, show=True, save=False) 
         return path
     if show:
         plt.show()
-        return None
+        return ""
     if save:
         path = f"{CUR_DIR}/graphs/graph_{calendar.timegm(time.gmtime())}"
         plt.savefig(path)
         return path
+    return ""
