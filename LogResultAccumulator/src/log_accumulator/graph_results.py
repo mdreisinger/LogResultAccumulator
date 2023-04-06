@@ -12,7 +12,8 @@ from src.log_accumulator.result import AccumulatedResult
 
 CUR_DIR = pathlib.Path(__file__).parent.resolve()
 
-def graph_results(accumulated_result: AccumulatedResult, show=True, save=False, file_name=None) -> str:
+def graph_results(accumulated_result: AccumulatedResult,
+                  show=True, save=False, file_name=None) -> str:
     """
     Creates a bar graph to display the accumulated results.
     """

@@ -81,6 +81,8 @@ class Consumer:
         """
         A method which is used to accumulate results of each Test iteration individually.
         """
+        #pylint:disable=too-many-nested-blocks
+        #pylint:disable=too-many-branches
         self.printer_queue.put("Worker thread called.")
         while True:
             if not self.input_queue.empty():
