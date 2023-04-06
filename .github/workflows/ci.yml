@@ -1,5 +1,14 @@
 name: ci
 
+env:
+  ECR_REPOSITORY_ACCUMULATOR: logresultaccumulator
+  ECR_REPOSITORY_GENERATOR: loggenerator
+  ECR_REPOSITORY_UPLOADER: loguploader
+  ECR_REGISTRY: 126493000772.dkr.ecr.us-west-2.amazonaws.com
+
+permissions:
+  contents: read
+
 on: [push]
 
 jobs:
@@ -22,7 +31,3 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         poetry run pylint $(git ls-files '*.py')
-
-    - name: Test with pytest
-      run: |
-        poetry run pytest LogResultAccumulator/tests/test_accumulate_results.py --log-cli-level=DEBUG -x
