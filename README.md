@@ -6,7 +6,7 @@ Accumulate a large number of log results and present a condensed summary of the 
   - The first line of the log file contents represents the log file name, so that the clients can correlate the results with log file that it came from.
 
 # Design Concept
-![Alt text](DesugbConcept.png?raw=true "Title")
+![Alt text](DesignConcept.png?raw=true "Title")
 
 # How to run:
 - Bring up RabbitMQ broker by running `docker-compose up` in the root directory.
